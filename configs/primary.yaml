@@ -1,0 +1,22 @@
+# The pre-registered primary analysis (DESIGN.md section 4.4). Do not edit after PREREG.md is committed.
+name: primary
+tier: T1                       # T1_LINCS_A549: LINCS A549 3.33 uM morphology x Tahoe A549 5 uM (plate-centred)
+target: prism_primary          # PRISM 20Q2 primary A549 LFC, 2.5 uM, HTS pinned, median over unit columns
+expected_n: 183
+seed: 20261122
+blocks: {morph: morph, tx: tx}
+k: 5                           # PCs per modality block, fitted in-fold
+alphas: [logspace, 0, 4, 8]    # ridge alpha grid; x Morgan SVD k in {16, 32}
+schemes: [scaffold, loco, moa] # scaffold is primary
+n_folds: 10
+n_repeats: 10
+n_inner: 5
+decision:
+  threshold: 0.03              # min(dR2_T, dR2_M) point estimates
+  alpha: 0.05                  # both within-MoA Freedman-Lane p < alpha
+  n_perm_block: 1000
+  gbm_same_sign: true
+n_perm_target: 1000
+n_boot: 2000
+gbm: {schemes: [scaffold, loco, moa], arms: [GBM_BASE, GBM_M, GBM_T, GBM_F]}
+nn: {schemes: [scaffold], seeds: [0, 1, 2, 3, 4]}

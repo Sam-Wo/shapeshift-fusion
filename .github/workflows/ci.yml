@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install (CPU torch wheel)
+        run: python -m pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+      - name: Tests (synthetic data only; no Step-2 tables, no real targets)
+        run: python -m pytest -q -m "not network"
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: No data tracked, no GDSC / Repurposing Hub columns in results
+        run: |
+          set -e
+          if git ls-files | grep -E '^(data|data_probe|runs)/|\.parquet$|\.npz$|\.xlsx$'; then echo "data file tracked"; exit 1; fi
+          for f in results/*.csv; do
+            if head -1 "$f" | tr ',' '\n' | grep -qixE 'LN_IC50|Z_SCORE|DRUG_ID|DRUG_NAME|SANGER_MODEL_ID|broad_id|name|moa|target_hub|indication|disease\.area|phase'; then
+              echo "GDSC / Repurposing Hub column in $f"; exit 1; fi
+          done
+      - name: PREREG.md unchanged since its freeze commit
+        run: |
+          git fetch --tags --unshallow || true
+          if git rev-parse -q --verify refs/tags/prereg-freeze >/dev/null; then
+            git diff --exit-code prereg-freeze -- PREREG.md
+          fi

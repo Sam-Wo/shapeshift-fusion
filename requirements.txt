@@ -1,0 +1,15 @@
+# Python 3.13, CPU only. torch from the CPU wheel index:
+#   pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.16.3
+scikit-learn==1.8.0
+rdkit==2026.3.5
+pyarrow==23.0.1
+matplotlib==3.11.0
+requests==2.32.5
+pyyaml==6.0.3
+joblib==1.5.3
+lightgbm==4.6.0
+torch==2.10.0
+pytest==9.0.2

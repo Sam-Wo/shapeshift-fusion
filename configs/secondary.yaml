@@ -1,0 +1,23 @@
+# Pre-registered secondary analyses (DESIGN.md sections 1.5 and 3.6). All labelled secondary.
+seed: 20261122
+n_folds: 10
+n_repeats: 10
+n_inner: 5
+n_boot: 2000
+n_perm_block: 200            # Freedman-Lane for secondaries: descriptive only (design: block permutations are primary-only), D-16
+targets:                     # (tier, target) refits with the primary arms, scaffold 10x10
+  - [T1, prism_secondary_auc]        # key secondary
+  - [T2, prism_primary]              # HepG2 parent
+  - [T3, prism_primary]              # U2OS, transcriptome = Tahoe consensus
+  - [T1, prism_primary_residual]     # line-selective residual: A549 minus median over all PRISM lines
+  - [T1, prism_secondary_lfc_2.5]    # dose-matched
+  - [T1, prism_secondary_lfc_10]     # dose-matched to the T2/T3 morphology dose
+variants:                    # T1 x prism_primary, scaffold 10x10
+  residualised: {residualise: true}
+  tx_direction_only: {tx: tx_dir}
+  morph_6dose_stack: {morph: [morph_d0, morph_d1, morph_d2, morph_d3, morph_d4, morph_d5]}
+  k_inner_cv: {k_grid: [4, 8, 16, 32]}
+  banded_ridge: {scales: [0.25, 1.0, 4.0]}
+  interaction: {interaction: true}
+  two_plate_subset: {subset: two_plate}
+binary_threshold: -1.0       # sensitive = PRISM primary LFC < -1 (AUROC/AUPRC, descriptive)
