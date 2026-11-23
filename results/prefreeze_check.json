@@ -1,0 +1,48 @@
+{
+ "block=tx,delta=0.0": {
+  "n_datasets": 200,
+  "n_perm": 99,
+  "mean_obs_dR2": -0.0064,
+  "P_obs_ge_0p03": 0.095,
+  "P_perm_p_lt_0p05": 0.04,
+  "P_rule": 0.02,
+  "mc_se_P_perm": 0.0139
+ },
+ "block=morph,delta=0.0": {
+  "n_datasets": 200,
+  "n_perm": 99,
+  "mean_obs_dR2": -0.0049,
+  "P_obs_ge_0p03": 0.04,
+  "P_perm_p_lt_0p05": 0.025,
+  "P_rule": 0.015,
+  "mc_se_P_perm": 0.011
+ },
+ "block=tx,delta=0.08": {
+  "n_datasets": 100,
+  "n_perm": 99,
+  "mean_obs_dR2": 0.0454,
+  "P_obs_ge_0p03": 0.52,
+  "P_perm_p_lt_0p05": 0.54,
+  "P_rule": 0.45,
+  "mc_se_P_perm": 0.0498
+ },
+ "block=morph,delta=0.08": {
+  "n_datasets": 100,
+  "n_perm": 99,
+  "mean_obs_dR2": 0.0394,
+  "P_obs_ge_0p03": 0.57,
+  "P_perm_p_lt_0p05": 0.58,
+  "P_rule": 0.51,
+  "mc_se_P_perm": 0.0494
+ },
+ "setup": {
+  "n": 183,
+  "tier": "T1",
+  "base_columns": 48,
+  "k_block": 5,
+  "folds": "scaffold 10-fold x 1",
+  "inner": "5-fold grouped",
+  "seconds": 1636
+ },
+ "type_I_ok": true
+}
