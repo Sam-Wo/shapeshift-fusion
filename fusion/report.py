@@ -136,9 +136,9 @@ def figures(runs):
         from matplotlib.lines import Line2D
         ax.legend(handles=[Line2D([], [], color=c, marker="o", lw=2, label=lab) for c, lab in
                            ((C1, "baselines / BASE (ridge)"), (C2, "modality arms (ridge)"), (C3, "GBM / NN"))],
-                  frameon=False, loc="lower right", fontsize=9)
+                  frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.09), ncol=3, fontsize=9)
         fig.tight_layout()
-        fig.savefig(F / "fig1_primary_r2_by_arm.png", dpi=160)
+        fig.savefig(F / "fig1_primary_r2_by_arm.png", dpi=160, bbox_inches="tight")
         plt.close(fig)
         # fig 2: observed dR2 vs Freedman-Lane null
         fig, axs = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
@@ -167,12 +167,12 @@ def figures(runs):
                 ax.plot(dd["dR2"], yi + off, "o", color=c, ms=6, mec=SURF, mew=1.5)
         ax.axvline(0, color=INK2, lw=1)
         ax.axvline(0.03, color=INK2, lw=1, ls="--")
-        ax.set_yticks(y, [f"{k.replace('secondary_', '')} (n={s['n']})" for k, s in rows], fontsize=8)
+        ax.set_yticks(y, [f"{k.removeprefix('secondary_')} (n={s['n']})" for k, s in rows], fontsize=8)
         ax.set_xlabel("ΔR² with 95% group-bootstrap CI (dashed: pre-registered 0.03)")
         from matplotlib.lines import Line2D
         ax.legend(handles=[Line2D([], [], color=C2, marker="o", lw=2, label="ΔR²_T: transcriptome added to BASE+M"),
                            Line2D([], [], color=C1, marker="o", lw=2, label="ΔR²_M: morphology added to BASE+T")],
-                  frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.12 - 0.3 / len(rows)), ncol=2, fontsize=8)
+                  frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, fontsize=8)
         _style(ax)
         fig.tight_layout()
         fig.savefig(F / "fig3_delta_r2_all_analyses.png", dpi=160, bbox_inches="tight")
