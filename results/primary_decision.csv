@@ -1,0 +1,2 @@
+c1_min_dR2_ge_threshold,c2_both_perm_p_lt_alpha,c3_gbm_same_sign,verdict,n,dR2_T,dR2_T_ci_lo,dR2_T_ci_hi,dR2_T_lb95,dR2_M,dR2_M_ci_lo,dR2_M_ci_hi,dR2_M_lb95,fl_p_tx,fl_p_morph,n_perm,fl_n_permutable,fl_regressor_rank_tx,fl_regressor_rank_morph,gbm_dR2_T,gbm_dR2_M,min_dR2_ub95,git_sha
+False,False,False,NULL (bounded: joint gain < -0.001 at 95%),183,-0.0274,-0.0638,0.0105,-0.0561,0.0066,-0.0356,0.0618,-0.0295,0.4446,0.0779,1000,179,53,53,-0.0080,-0.0399,-0.0010,979205fd0447ef543e683324cb10b4e538a1ab74

@@ -1,0 +1,45 @@
+{
+ "git_sha": "db6c8ed8660ad6f82b08658d5b7e06b565376b7c",
+ "shapeshift_code_commit": "ec844a0ac2abf264604b2762cce1eb4516e77413",
+ "python": "3.13.0",
+ "platform": "Windows-10-10.0.19045-SP0",
+ "numpy": "2.2.6",
+ "sklearn": "1.8.0",
+ "lightgbm": "4.6.0",
+ "torch": "2.10.0+cpu",
+ "config_sha256": {
+  "primary.yaml": "357d1c40bc862d4c3e8150307c6f585ccd1cf90eaf7f6f400d7c80daa9894b15",
+  "secondary.yaml": "a148cd123ec6845457c421ce29bc2da37da467a2cb9226f271a231838ff8063e"
+ },
+ "step2_inputs_sha256": {
+  "step2/units.csv": "8802f61d90ead40efabe7d443aeef24eb593e92ca930e2983e574eeb051df7a1",
+  "step2/morph_lincs.parquet": "deb0d8900cfdcdf6975fb30b303434f1135be307333334b4dc9dd5d691f4ecb5",
+  "step2/morph_lincs_activity.csv": "2549a336efbde964a2b0a0a2246b806ee32d560f0c1c174219c6180158035cdc",
+  "step2/morph_euos.parquet": "c8a5874aca33bbe82aef8e1201caa9ce58a19f8e92a1eabfccddd94cf5548b5d",
+  "step2/morph_euos_activity.csv": "ef0695749848cc7013a7891cc54fb115d6bbe3d8a7b6b9461be8ff88301d75a5",
+  "morph_profiles_high.parquet": "9d581bd76b71fd53ede8419732408e0b508aba84c28e8dd542e2742c4eeb74c4",
+  "step2/morph_activity.csv": "9b9cfcb8800fa9b32684a221ac11bef4eafc8cbdbd356bc551b84a5aec843e58",
+  "tahoe_signatures.parquet": "582499ecae9e46e6695d14986f3719fd750cf6cb1bc66fa942687c5eed8e5ded",
+  "step2/tahoe_perline.parquet": "bee3ffb6d3076a70d0bbbaba8859dbea01b3f5dd7c8a48550eaf297af740669a",
+  "step2/tahoe_plate_line_mean.parquet": "a1618e09a0ac9a61040d5fb7a5511cdd915e4efb28be26c17c0383b1515d24eb",
+  "step2/tahoe_consistency.csv": "2667c8676a843aab913dd2687553503ae25a99c4f86d62e4e1a15d64eebd8db4",
+  "data/tahoe/drug_metadata.parquet": "7a04c7a6611e74c92253163b994ff0a47191928ee7511f1c2ca508cee0e79f28"
+ },
+ "new_downloads": [
+  {
+   "file": "secondary_curve_params_targets.csv",
+   "url": "https://ndownloader.figshare.com/files/36794595",
+   "bytes_transferred": 290170269,
+   "sha256_source": "2ac69a21f1d681fe7447689262b82ca6e3dc90bfef0bd96eb5479b96f424e43d",
+   "note": "rows for ['ACH-000364', 'ACH-000681', 'ACH-000739'] only; Hub columns dropped"
+  },
+  {
+   "file": "primary-screen-replicate-collapsed-logfold-change.csv",
+   "url": "https://ndownloader.figshare.com/files/36794580",
+   "bytes_transferred": 46663573,
+   "sha256_source": "76c66a52115ed1653cc0e609f5cd0c676f5c2076beca9e585ca3f44649a1784c"
+  }
+ ],
+ "quick": false,
+ "data_manifest_sha256": "a002436bf0fcb6cdeeb97cf37e95c350080469983287f5832814e333a14112bf"
+}

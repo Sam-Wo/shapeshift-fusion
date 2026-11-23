@@ -136,3 +136,22 @@ permutations each. They are not decision tests. The GBM is run on the primary an
 the secondary targets and the two-plate subset, but not on the other T1 feature variants, which are ridge-only as
 in §3.6. The PyTorch model runs on the primary scaffold split only (D-10). This keeps the total budget near the
 design's 10–25 CPU-hours.
+
+## After the run (2026-11-23; results had been seen)
+
+These entries change no pre-registered quantity.
+
+**D-17 Run provenance.** `run_all.py` started at the freeze commit `cebc76d`. While the primary stage was running,
+commit `979205f` added two exploratory items (single-covariate nuisance R² and arms without the nuisance block)
+and the matching report rows. The primary and secondary code paths are unchanged between the two commits. The
+analysis summaries record `979205f` because they were saved after that commit. The running process had loaded
+the older exploratory code, so the exploratory stage was rerun once (`--only exploratory --force`) after the
+main run. That rerun rebuilds the feature cache deterministically from the same inputs.
+
+**D-18 Binary readout on the residual target.** For `prism_primary_residual` the descriptive AUROC/AUPRC uses
+residual < −1 (line-selective sensitivity, 10 positives), because the code applies the < −1 threshold to whichever
+primary-screen target is modelled. It is reported only in `results/arms_all_analyses.csv` and is not
+interpreted.
+
+**D-19 Figures.** After the first render, the figure legends were moved off the data and the y-axis labels of
+figure 3 were corrected. This is presentation only.
