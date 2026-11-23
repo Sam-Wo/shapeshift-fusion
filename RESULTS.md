@@ -26,12 +26,17 @@ viability beyond chemistry, MoA and cytotoxicity covariates.**
 2. Both permutation p-values < 0.05: **no** (0.445, 0.078).
 3. The GBM Δs share the ridge sign: **no** (GBM ΔR²_M is negative).
 
-**Verdict** (mapping D-07): **NULL, bounded.** The one-sided 95% bootstrap upper bound of the joint gain,
-min(ΔR²_T, ΔR²_M), is −0.001, below the 0.03 "meaningful" threshold.
-- Per block, a transcriptome gain over BASE + morphology above 0.004 R² is excluded at 95% (one-sided).
-- A morphology gain over BASE + transcriptome of up to about 0.05 is not excluded.
-- Caveat on power: the pre-freeze check (PREREG.md) found the one-block rule has only about 0.45–0.51 power at a
-  true δ = 0.08 on these features, so the bootstrap bound, not the test, is the informative part.
+**Verdict** (mapping D-07): **NULL, bounded.** The one-sided 95% bootstrap upper bound of the *observed*
+out-of-fold joint gain, min(ΔR²_T, ΔR²_M), is −0.001, below the 0.03 "meaningful" threshold. The observed
+per-block upper bounds are 0.004 (transcriptome) and 0.053 (morphology).
+
+These bounds are on observed out-of-fold ΔR², not on the true increment.
+- **Adding a block costs out-of-fold R².** The Freedman–Lane null medians are −0.029 (T) and −0.017 (M), so an
+  observed ΔR² sits below the true gain by about that much.
+- **Power is limited.** The pre-freeze check (PREREG.md) found only about 0.45–0.51 power for the one-block rule at
+  a true δ = 0.08 on these features.
+- **So small true joint gains, around 0.03–0.05, are not ruled out.** The result rules out a *large* joint gain.
+  This is the outcome the design anticipated (§4.5, item 6).
 
 **R² by arm** (scaffold split; `results/arms_all_analyses.csv`; figure 1). Target-permutation p ≤ 0.001
 (1,000 permutations) for every arm marked *.
@@ -52,11 +57,14 @@ min(ΔR²_T, ΔR²_M), is −0.001, below the 0.03 "meaningful" threshold.
 | GBM: BASE / M / T / F | 0.491 / 0.437 / 0.469 / 0.429 | | | |
 | PyTorch two-encoder: F / z_t zeroed / z_m zeroed | 0.488 / 0.499 / 0.461 | | | |
 
-- **Nothing beats BASE.** No fusion variant does: not early, late-average, stacking, GBM or the neural network.
-  GBM, "the baseline to beat", does not beat ridge BASE either.
-- **The NN expectation held.** As pre-registered, the NN does not beat ridge. Its built-in ablation shows a small
-  transcriptome contribution inside the NN (0.488 vs 0.461 with z_m zeroed, Δ 0.027, CI 0.007–0.047), but the NN
-  as a whole is below BASE.
+- **No arm exceeds BASE beyond the bootstrap CI.** M (0.526) and F-late-avg (0.520) sit slightly above BASE
+  (0.512) as point estimates; for M − BASE the gain is +0.014 (−0.036 to 0.078). Early fusion, stacking, GBM and
+  the neural network are all at or below BASE. GBM, "the baseline to beat", does not beat ridge BASE either.
+- **The NN expectation held.** As pre-registered, the NN does not beat ridge.
+  - **Morphology helps a little inside the NN.** Zeroing the morphology encoder (z_m) lowers R² from 0.488 to
+    0.461 (Δ 0.027, CI 0.007–0.047).
+  - **The transcriptome does not.** Zeroing the transcriptome encoder (z_t) raises R² to 0.499 (Δ −0.011).
+  - **The NN as a whole is below BASE.**
 - **The other split schemes agree** (§4.6: all three are reported).
   - LOCO: ΔR²_T −0.040 (−0.088 to 0.011), ΔR²_M −0.019 (−0.081 to 0.058).
   - Leave-one-MoA-class-out: ΔR²_T −0.012 (−0.038 to 0.016), ΔR²_M +0.013 (−0.052 to 0.099).
@@ -79,10 +87,11 @@ magnitudes carry.
 
 ## Secondary analyses (pre-registered; all descriptive)
 
-All use the scaffold 10-fold × 10 split. Freedman–Lane p-values use 200 permutations here (D-16) and are not
+All use the scaffold 10-fold × 10 split. The Freedman–Lane p-values for the secondaries are **exploratory**
+(200 permutations, D-16): the design pre-registers block permutations for the primary only. They are not
 decision tests. 95% bootstrap CIs are in brackets.
 
-| Analysis | n | R² BASE / M / T / F | ΔR²_T | ΔR²_M | FL p (T, M) | GBM Δ_T, Δ_M |
+| Analysis | n | R² BASE / M / T / F | ΔR²_T | ΔR²_M | FL p (T, M), exploratory | GBM Δ_T, Δ_M |
 |---|---|---|---|---|---|---|
 | **Key secondary:** T1 × PRISM secondary AUC (official `auc`) | 93 | 0.516 / 0.506 / 0.543 / 0.526 | +0.020 [−0.011, 0.050] | −0.017 [−0.043, 0.010] | 0.040, 0.567 | −0.014, +0.013 |
 | T2 HepG2 (EU-OS × Tahoe-C3A) × PRISM primary | 156 | 0.187 / 0.256 / 0.210 / 0.272 | +0.016 [−0.017, 0.045] | **+0.062 [0.021, 0.098]** | 0.637, 0.110 | −0.010, +0.227 |
@@ -150,7 +159,7 @@ From `results/exploratory.csv`:
 ## Limitations
 
 - **n.** The study has n = 183, and the real-feature power of the decision rule is about 0.5 per block at
-  δ = 0.08. Small joint gains (0.03–0.05) could be missed, although the bootstrap bound argues against them here.
+  δ = 0.08. Small true joint gains (0.03–0.05) could be missed.
 - **PRISM primary is a single-dose, noisy target.** The bootstrap CIs on R² are wide (about ±0.15).
 - **MoA control is partial:** 102 of 183 units are "unclear", and the bootstrap does not correct for MoA
   clustering (§4.2).

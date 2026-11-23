@@ -15,15 +15,16 @@ similarity structure?
   Freedman–Lane p = 0.45).
 - **Morphology added to BASE + transcriptome:** ΔR² = **+0.007** (−0.036 to 0.062; p = 0.078).
 - **GBM:** both Δs are negative.
-- **Bound:** the one-sided 95% upper bound of the joint gain, min(ΔR²_T, ΔR²_M), is −0.001, below the 0.03
-  "meaningful" threshold.
+- **Bound:** the one-sided 95% bootstrap upper bound of the *observed* out-of-fold joint gain,
+  min(ΔR²_T, ΔR²_M), is −0.001. This rules out a large joint gain. The real-feature power was only about 0.5 per
+  block at a true ΔR² of 0.08, so small true gains (0.03–0.05) are not excluded.
 
 **Why.** Most of what either assay knows about viability is "how hard the drug hit the cells". The morphology norm
 alone gives R² 0.45 and the Tahoe signature magnitude alone 0.32; both covariates sit in every arm's BASE
 (R² 0.51). Beyond that, neither modality's PCs add anything, alone or together.
 
 **Secondaries.** No secondary shows joint information. Morphology alone adds over BASE + transcriptome in HepG2
-(+0.062), U2OS (+0.048) and the dose-matched A549 secondary target (+0.063). That is one modality dominating, not
+(+0.062), U2OS (+0.048) and the dose-matched A549 secondary target (+0.063), as observed ΔR². That is one modality dominating, not
 complementarity, and it is hypothesis-generating only.
 
 ![Delta R2 across all analyses](figures/fig3_delta_r2_all_analyses.png)
@@ -40,7 +41,7 @@ and compute.
    - the within-MoA Freedman–Lane type-I rate was 0.040 / 0.025, at most 0.06 as required;
    - the rule's power at δ = 0.08 was 0.45–0.51, lower than the design's synthetic simulation.
 4. **[PREREG.md](PREREG.md)**: §4.4 frozen with its SHA-256 (tag `prereg-freeze`).
-5. **Only then were PRISM targets loaded.** Post-run notes are D-17 to D-19.
+5. **Only then were PRISM targets loaded.** Post-run notes are D-17 to D-23.
 
 ## Method in one paragraph
 

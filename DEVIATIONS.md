@@ -155,3 +155,26 @@ interpreted.
 
 **D-19 Figures.** After the first render, the figure legends were moved off the data and the y-axis labels of
 figure 3 were corrected. This is presentation only.
+
+**D-20 (logged late; the decision was made before the freeze, in `acb1934`) Gram-matrix engine instead of an
+sklearn Pipeline per arm.**
+- **What changed.** §2.4 asks for "one sklearn `Pipeline` per arm". The ridge arms instead run through
+  `fusion/engine.py`. It applies the same in-fold transforms (PCA, TruncatedSVD, one-hot, median imputation,
+  standardisation, ridge) computed from Gram matrices restricted to the training rows. This makes 1,000-fold
+  nested-CV permutation reruns affordable.
+- **Equivalence check.** `tests/test_engine.py::test_fusion_design_matches_sklearn_pipeline` checks that it
+  reproduces an sklearn `Pipeline(ColumnTransformer[OneHotEncoder, TruncatedSVD, SimpleImputer, PCA, PCA],
+  StandardScaler, Ridge)` fitted on the training rows only.
+- **Leakage tests.** `tests/test_no_leakage.py` holds the shuffle and perturbation leakage tests §2.4 asks for.
+
+**D-21 (logged late) Smoke run after the freeze.** After the freeze, and before the full run, a `--quick` smoke run
+of the primary stage was made: 2 repeats, 20 permutations, no NN, output in `runs/quick/`. Its ridge R² values
+were seen (BASE 0.51, M 0.52, T 0.48, F 0.49), and the run was stopped. No code or config changed between that
+run and the full run. Its outputs are not used anywhere.
+
+**D-22 (logged late) The exploratory items in `979205f` are post hoc.** The single-covariate nuisance R² and the
+arms without the nuisance block were added after the primary ridge R² values (full run) had been seen. They are
+labelled exploratory in RESULTS.md.
+
+**D-23 (logged late) Further CI items not implemented.** In addition to ruff (D-14), two §7 CI items are missing:
+the `network`-marked overlap-count test (`test_overlap_counts.py`) and the weekly scheduled job.
