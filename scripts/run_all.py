@@ -8,7 +8,8 @@ Usage:
   --probe  design-stage probe outputs (sets FUSION_PROBE)          default ./data_probe
   --quick  smoke run: 2 repeats, 20 permutations, no NN (results are NOT the pre-registered run)
 Each analysis is checkpointed to runs/<name>/summary.json and skipped when present (unless --force).
-New downloads (PRISM curve parameters, full primary LFC matrix) are fetched by scripts/fetch_targets.py.
+New downloads (PRISM curve parameters, full primary LFC matrix) are fetched by scripts/fetch_targets.py,
+called automatically when they are missing.
 """
 import argparse
 import hashlib
@@ -115,6 +116,16 @@ def problem_for(tier, target, subset=None):
 
 
 # ------------------------------------------------------------------ stages
+def stage_downloads():
+    """Fetch the two PRISM 20Q2 files (scripts/fetch_targets.py) if they are not under FUSION_DATA yet."""
+    d = paths.data_dir() / "prism20q2"
+    if not ((d / "secondary_curve_params_targets.csv").exists() and (d / "primary_line_median.csv").exists()):
+        log("fetching PRISM 20Q2 curve parameters + primary matrix (scripts/fetch_targets.py)")
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import fetch_targets
+        fetch_targets.main()
+
+
 def stage_features():
     for t in D.TIERS:
         if not (paths.data_dir() / "cache" / f"features_{t}.npz").exists() or ARGS.force:
@@ -257,6 +268,7 @@ def stage_exploratory(cs, cp):
 def main():
     t0 = time.time()
     cp, cs = cfg_load("primary.yaml"), cfg_load("secondary.yaml")
+    stage_downloads()
     stage_features()
     m = manifest(cp, cs)
     log(f"run_all start git={m['git_sha']} quick={ARGS.quick}")
