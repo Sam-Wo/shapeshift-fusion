@@ -88,8 +88,12 @@ def tables(runs):
         tp = dict(e["two_plate_scoring_of_primary_oof"])
         ntp = tp.pop("n")
         rows += [dict(analysis=f"two_plate_scoring_R2_{a}", n=ntp, R2=v) for a, v in tp.items()]
-        rows.append(dict(analysis="BASE_plus_rdkit_descriptors_R2", n=runs.get("primary_scaffold", {}).get("n"),
-                         R2=e["base_plus_rdkit_descriptors_R2"]))
+        n0 = runs.get("primary_scaffold", {}).get("n")
+        rows.append(dict(analysis="BASE_plus_rdkit_descriptors_R2", n=n0, R2=e["base_plus_rdkit_descriptors_R2"]))
+        rows += [dict(analysis=f"nuisance_only_{k}_R2", n=n0, R2=v)
+                 for k, v in e.get("nuisance_single_covariate_R2", {}).items()]
+        rows += [dict(analysis=f"no_nuisance_{k}_R2", n=n0, R2=v)
+                 for k, v in e.get("without_nuisance_block_R2", {}).items()]
         pd.DataFrame(rows).to_csv(R / "exploratory.csv", index=False, float_format="%.4f")
     return sm
 

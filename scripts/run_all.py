@@ -237,6 +237,19 @@ def stage_exploratory(cs, cp):
     arm = E.Arm("BASE_desc", moa=True, chem=True, nuis=True, extra=("desc",))
     r = E.run_arm(E.Featurizer(prob), arm, pl)
     out["base_plus_rdkit_descriptors_R2"] = float(E.r2(r["oof"], prob.y).mean())
+    # which nuisance covariate carries B3, and do the modalities add to MoA + chemistry WITHOUT the nuisance block?
+    feat = E.Featurizer(prob)
+    single = {}
+    for j, c in enumerate(info["nuis_cols"]):
+        q = E.Problem(prob.y, prob.moa, prob.nuis[:, [j]], prob.bits, {})
+        single[c] = float(E.r2(E.run_arm(E.Featurizer(q), E.Arm(c, nuis=True), pl)["oof"], prob.y).mean())
+    out["nuisance_single_covariate_R2"] = single
+    nob = {}
+    for nm, blocks in (("MoA+chem", ()), ("MoA+chem+M", ("morph",)), ("MoA+chem+T", ("tx",)),
+                       ("MoA+chem+M+T", ("morph", "tx"))):
+        nob[nm] = float(E.r2(E.run_arm(feat, E.Arm(nm, moa=True, chem=True, blocks=blocks, k=5), pl)["oof"],
+                             prob.y).mean())
+    out["without_nuisance_block_R2"] = nob
     log(f"exploratory: {out}")
     save(name, out)
 
